@@ -1,6 +1,7 @@
 import "./global.css";
 import type { ReactNode } from "react";
 import NavMenu from "./components/NavMenu";
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: "Delphia Designs",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
 
+        <Analytics />
       </body>
     </html>
   );
