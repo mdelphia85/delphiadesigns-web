@@ -156,6 +156,12 @@ body {
   gap: 0.2rem;
 }
 
+.hero-brand-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .hero-welcome,
 .hero-line,
 .hero-line-bottom {
@@ -190,12 +196,19 @@ body {
   animation: heroWaveRight 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s forwards;
 }
 
+.hero-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .hero-line-bottom {
   margin-top: 0.6rem;
   font-size: clamp(1.1rem, 2vw, 2.1rem);
   letter-spacing: 0.04em;
   opacity: 0;
-  animation: slideInUp 1s ease-out 0.9s forwards;
+  animation: slideInUp 1s ease-out 1.3s forwards;
 }
 
 .logo-wrap {
