@@ -162,6 +162,35 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="info-section">
+        <div className="info-grid">
+          <div className="info-card">
+            <p className="section-kicker">Engineering scope</p>
+            <h3>Backend execution is part of the value, not an afterthought.</h3>
+            <ul className="check-list">
+              <li>API development and backend architecture</li>
+              <li>System integration and data flow design</li>
+              <li>Automation logic for repetitive or error-prone work</li>
+              <li>Technical implementation that supports the product, not just the interface</li>
+            </ul>
+          </div>
+
+          <div className="info-card">
+            <p className="section-kicker">Why it matters</p>
+            <div className="outcome-grid">
+              <div className="outcome-item">
+                <h4>More reliable systems</h4>
+                <p>When the backend is solid, the whole operation runs smoother.</p>
+              </div>
+              <div className="outcome-item">
+                <h4>Cleaner scaling</h4>
+                <p>Practical architecture makes it easier to grow without reworking everything.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="cta-footer">
         <h3>Need a digital tool, website, or workflow that actually fits how you operate?</h3>
         <Link href="/contact" className="primary-cta large-cta">
