@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -21,6 +22,15 @@ export default function HomePage() {
         <span className="hero-tagline hero-tagline-top">Consumer Built.</span>
         <span className="hero-tagline hero-tagline-mid">Consumer Driven.</span>
         <span className="hero-tagline hero-tagline-bottom">Made by the people who use it.</span>
+      </div>
+
+      <div className="hero-actions" aria-label="Primary actions">
+        <Link href="/services" className="hero-button hero-button-primary">
+          View Services
+        </Link>
+        <Link href="/contact" className="hero-button hero-button-secondary">
+          Start a Project
+        </Link>
       </div>
     </section>
   );
