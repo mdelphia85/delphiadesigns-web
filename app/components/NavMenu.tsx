@@ -1,41 +1,23 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function NavMenu() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      {/* Menu Icon */}
-      <div
-        className="fixed top-4 left-4 z-50 cursor-pointer"
-        onClick={() => setOpen(!open)}
-      >
-        <Image
-          src="/menu.png"
-          alt="Menu"
-          width={48}
-          height={48}
-        />
-      </div>
+    <header className="fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl -translate-x-1/2">
+      <nav className="flex items-center justify-between gap-3 rounded-full border border-white/10 bg-black/60 px-3 py-2 shadow-[0_18px_45px_rgba(2,6,23,0.45)] backdrop-blur-sm">
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:opacity-90"
+        >
+          Home
+        </Link>
 
-      {/* Menu opening to the RIGHT */}
-      <div
-        className={`fixed top-4 left-20 bg-black/90 text-white p-4 rounded-lg shadow-xl
-          transform transition-transform duration-300 z-40
-          ${open ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"}`}
-      >
-        <nav className="flex flex-col gap-4 text-lg">
-          <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-          <Link href="/about" onClick={() => setOpen(false)}>About</Link>
-          <Link href="/services" onClick={() => setOpen(false)}>Services</Link>
-          <Link href="/portfolio" onClick={() => setOpen(false)}>Portfolio</Link>
-          <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
-        </nav>
-      </div>
-    </>
+        <Link
+          href="/contact"
+          className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-200 via-blue-300 to-slate-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:opacity-90"
+        >
+          Book a discovery call
+        </Link>
+      </nav>
+    </header>
   );
 }
