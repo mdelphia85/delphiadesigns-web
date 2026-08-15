@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <section className="hero-shell">
       <div className="hero-copy" aria-label="Delphia Designs hero statement">
-        <span className="hero-welcome">Welcome to</span>
+        <span className="hero-welcome">Delphia Designs</span>
       </div>
 
       <div className="logo-wrap">
@@ -18,9 +18,9 @@ export default function HomePage() {
       </div>
 
       <div className="hero-footer" aria-label="Delphia Designs tagline">
-        <span className="hero-tagline hero-tagline-top">Consumer Built.</span>
-        <span className="hero-tagline hero-tagline-mid">Consumer Driven.</span>
-        <span className="hero-tagline hero-tagline-bottom">Made by the people who use it.</span>
+        <span className="hero-tagline hero-tagline-top">Built for real use.</span>
+        <span className="hero-tagline hero-tagline-mid">Designed for real problems.</span>
+        <span className="hero-tagline hero-tagline-bottom">Created by people who live in the product.</span>
       </div>
     </section>
   );
