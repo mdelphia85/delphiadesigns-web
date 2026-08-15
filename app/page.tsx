@@ -3,6 +3,7 @@ import Link from "next/link";
 
 const services = [
   "Automation engineering and process design",
+  "Backend systems, APIs, and infrastructure",
   "Custom software and internal tools",
   "Website design and front-end development",
   "Workflow automation and business systems",
@@ -69,11 +70,11 @@ export default function HomePage() {
 
       <section className="lead-section">
         <div className="lead-card">
-          <p className="eyebrow">Automation engineering • custom software • practical design</p>
+          <p className="eyebrow">Automation engineering • backend systems • practical design</p>
           <h2>Systems, automation, and digital tools built for how real work actually happens.</h2>
           <p className="lead-copy">
             Delphia Designs helps founders, teams, and growing businesses solve operational friction with practical
-            automation, custom software, and digital experiences built around real-world needs.
+            automation, backend systems, custom software, and digital experiences built around real-world needs.
           </p>
 
           <div className="lead-actions">
@@ -103,8 +104,8 @@ export default function HomePage() {
             <ul className="check-list">
               <li>Founders with an idea but no clear product path</li>
               <li>Small businesses dealing with messy workflows</li>
-              <li>Operations teams that need reliable automation and better systems</li>
-              <li>Businesses that want digital tools grounded in real engineering and practical use</li>
+              <li>Operations teams that need reliable automation, backend systems, and better infrastructure</li>
+              <li>Businesses that want digital tools grounded in real engineering, practical use, and clean execution</li>
             </ul>
           </div>
 

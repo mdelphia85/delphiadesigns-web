@@ -7,18 +7,25 @@ export default function ServicesPage() {
     {
       key: "software",
       title: "Custom Software Development",
-      text: `Tailored desktop and enterprise software built around your workflow.
+      text: `Tailored software and internal systems built around your workflow.
 We design tools that solve real problems without unnecessary complexity —
-built as consumers, for consumers.`,
+from user-facing interfaces to backend logic and integrations.`,
       color: "bg-blue-900/40 text-blue-300 border-blue-500/40",
+    },
+    {
+      key: "backend",
+      title: "Backend Systems & API Development",
+      text: `Reliable backend architecture, APIs, and data flows that power the business.
+We build systems that handle growth, automation, and operational complexity with clean, scalable logic.`,
+      color: "bg-orange-900/40 text-orange-300 border-orange-500/40",
     },
     {
       key: "businessSoftware",
       title: "Business-Specific Custom Software",
       text: `Software built specifically for your business operations, workflows, and industry needs.
 We eliminate bottlenecks, reduce manual work, and streamline daily operations —
-built as consumers, for consumers.`,
-      color: "bg-orange-900/40 text-orange-300 border-orange-500/40",
+from process design to implementation and support.`,
+      color: "bg-yellow-900/40 text-yellow-300 border-yellow-500/40",
     },
     {
       key: "websites",

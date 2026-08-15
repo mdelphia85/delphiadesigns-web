@@ -8,9 +8,9 @@ export default function AboutPage() {
 
         <p className="text-gray-300 leading-relaxed mb-6 text-lg">
           Delphia Designs is a product-first studio focused on practical digital
-          solutions. We build software, systems, and experiences that solve real
-          problems — without the clutter, complexity, or wasted effort that often
-          comes with generic technology.
+          solutions. We build software, backend systems, automation, and
+          experiences that solve real problems — without the clutter,
+          complexity, or wasted effort that often comes with generic technology.
         </p>
 
         <p className="text-gray-300 leading-relaxed mb-6 text-lg">
@@ -21,11 +21,11 @@ export default function AboutPage() {
         </p>
 
         <p className="text-gray-300 leading-relaxed text-lg">
-          Whether it’s custom software, business automation, web development, or
-          product design, the goal is the same: create tools that are useful,
-          reliable, and built to make work and life easier. Delphia Designs is
-          about practical innovation — not noise, not hype, and not unnecessary
-          complexity.
+          Whether it’s custom software, backend architecture, business
+          automation, web development, or product design, the goal is the same:
+          create tools that are useful, reliable, and built to make work and life
+          easier. Delphia Designs is about practical innovation — not noise, not
+          hype, and not unnecessary complexity.
         </p>
 
       </div>
