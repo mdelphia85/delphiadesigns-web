@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const services = [
-  "Website design and front-end development",
+  "Automation engineering and process design",
   "Custom software and internal tools",
+  "Website design and front-end development",
   "Workflow automation and business systems",
   "Product thinking for founders and growing teams",
 ];
@@ -68,11 +69,11 @@ export default function HomePage() {
 
       <section className="lead-section">
         <div className="lead-card">
-          <p className="eyebrow">Custom software • websites • better systems</p>
-          <h2>Tools and experiences that fit how real businesses actually operate.</h2>
+          <p className="eyebrow">Automation engineering • custom software • practical design</p>
+          <h2>Systems, automation, and digital tools built for how real work actually happens.</h2>
           <p className="lead-copy">
-            Delphia Designs helps founders and growing teams turn messy workflows, unclear digital experiences,
-            and business bottlenecks into practical tools that work.
+            Delphia Designs helps founders, teams, and growing businesses solve operational friction with practical
+            automation, custom software, and digital experiences built around real-world needs.
           </p>
 
           <div className="lead-actions">
@@ -102,8 +103,8 @@ export default function HomePage() {
             <ul className="check-list">
               <li>Founders with an idea but no clear product path</li>
               <li>Small businesses dealing with messy workflows</li>
-              <li>Growing teams that need systems that scale with them</li>
-              <li>People who want digital tools that feel practical, not inflated</li>
+              <li>Operations teams that need reliable automation and better systems</li>
+              <li>Businesses that want digital tools grounded in real engineering and practical use</li>
             </ul>
           </div>
 
@@ -147,15 +148,15 @@ export default function HomePage() {
         <div className="service-grid">
           <div className="service-card">
             <h4>Manual work slowing the team down</h4>
-            <p>Automation, cleaner workflows, and simple systems that reduce wasted effort.</p>
+            <p>Automation engineering and process design reduce wasted effort and improve consistency.</p>
           </div>
           <div className="service-card">
-            <h4>Disconnected processes</h4>
-            <p>Better tools and integrations to keep information moving without chaos.</p>
+            <h4>Disconnected systems and workflows</h4>
+            <p>Better integrations and custom tools keep information moving without operational chaos.</p>
           </div>
           <div className="service-card">
             <h4>Web presence that does not convert</h4>
-            <p>Design and front-end work built to communicate value and create action.</p>
+            <p>Design and front-end work built to communicate value, clarify your offer, and create action.</p>
           </div>
         </div>
       </section>
