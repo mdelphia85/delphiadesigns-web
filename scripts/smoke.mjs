@@ -37,6 +37,12 @@ try {
     console.log(`PASS ${pathname} (200)`);
   }
 
+  const readiness = await fetch(origin + "/api");
+  assert.equal(readiness.status, 200, "Contact readiness should be accessible without secrets");
+  assert.equal(readiness.headers.get("cache-control"), "no-store");
+  assert.deepEqual(await readiness.json(), { formAvailable: false },
+    "With no mail credentials, the contact page must offer direct email instead of a broken form");
+
   const request = (body) => fetch(origin + "/api", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
