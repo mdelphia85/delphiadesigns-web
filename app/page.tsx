@@ -79,7 +79,7 @@ export default function HomePage() {
 
           <div className="lead-actions">
             <Link href="/contact" className="primary-cta">
-              Book a discovery call
+              Request a discovery call
             </Link>
             <Link href="/services" className="secondary-cta">
               Explore services
