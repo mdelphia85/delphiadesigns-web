@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 
 type ContactForm = {
   name: string;
@@ -15,7 +15,24 @@ const CONTACT_ADDRESS = "delphiadesigns@gmail.com";
 export default function ContactPage() {
   const [form, setForm] = useState<ContactForm>(INITIAL_FORM);
   const [sending, setSending] = useState(false);
+  const [formAvailable, setFormAvailable] = useState<boolean | null>(null);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch("/api", { cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Contact service status unavailable");
+        return response.json();
+      })
+      .then((data) => {
+        if (mounted) setFormAvailable(data?.formAvailable === true);
+      })
+      .catch(() => {
+        if (mounted) setFormAvailable(false);
+      });
+    return () => { mounted = false; };
+  }, []);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -25,7 +42,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (sending) return;
+    if (sending || formAvailable !== true) return;
 
     setSending(true);
     setFeedback(null);
@@ -52,7 +69,7 @@ export default function ContactPage() {
       // Keep the user's draft so a failed provider call does not lose the inquiry.
       setFeedback({
         type: "error",
-        text: "The message could not be sent. Please email us directly at " + CONTACT_ADDRESS + ". Your draft is still here.",
+        text: "Your message could not be delivered. Please use the direct email link below. Your draft remains on this page.",
       });
     } finally {
       setSending(false);
@@ -82,7 +99,30 @@ export default function ContactPage() {
         </p>
       </div>
 
-      <form
+      {formAvailable === null && (
+        <div role="status" className="w-full max-w-lg rounded-xl border border-gray-700 bg-black/40 p-6 text-center text-gray-300">
+          Checking contact form availability. You can email us directly using the link above.
+        </div>
+      )}
+
+      {formAvailable === false && (
+        <div role="status" className="w-full max-w-lg rounded-xl border border-blue-500/40 bg-black/40 p-6 text-center">
+          <p className="mb-4 text-gray-200">
+            The online contact form is temporarily unavailable. For project inquiries, email us directly.
+          </p>
+          <a
+            href={`mailto:${CONTACT_ADDRESS}?subject=New%20project%20inquiry`}
+            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+          >
+            Email Delphia Designs
+          </a>
+          <p className="mt-3 text-sm text-gray-400">
+            This opens your email app so you can send the message yourself.
+          </p>
+        </div>
+      )}
+
+      {formAvailable === true && <form
         onSubmit={handleSubmit}
         aria-label="Contact Delphia Designs"
         className="w-full max-w-lg bg-black/40 border border-gray-700 rounded-xl p-6"
@@ -154,15 +194,24 @@ export default function ContactPage() {
         </button>
 
         {feedback && (
-          <p
-            className={`mt-4 text-sm ${feedback.type === "success" ? "text-green-300" : "text-red-300"}`}
-            role={feedback.type === "error" ? "alert" : "status"}
-            aria-live="polite"
-          >
-            {feedback.text}
-          </p>
+          <div aria-live="polite" className="mt-4 text-center">
+            <p
+              className={`text-sm ${feedback.type === "success" ? "text-green-300" : "text-red-300"}`}
+              role={feedback.type === "error" ? "alert" : "status"}
+            >
+              {feedback.text}
+            </p>
+            {feedback.type === "error" && (
+              <a
+                href={`mailto:${CONTACT_ADDRESS}?subject=New%20project%20inquiry`}
+                className="mt-2 inline-block text-blue-300 underline"
+              >
+                Open email app to contact us directly
+              </a>
+            )}
+          </div>
         )}
-      </form>
+      </form>}
     </section>
   );
 }
