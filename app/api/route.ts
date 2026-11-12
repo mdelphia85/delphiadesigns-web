@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+// Safe, read-only status for the contact page. No API keys or addresses
+// are returned; actual delivery is still confirmed only by a successful POST.
+export async function GET() {
+  return NextResponse.json(
+    { formAvailable: Boolean(process.env.RESEND_API_KEY?.trim()) },
+    { headers: { "Cache-Control": "no-store" } }
+  );
+}
+
 export async function POST(request: Request) {
   let name: unknown;
   let email: unknown;
