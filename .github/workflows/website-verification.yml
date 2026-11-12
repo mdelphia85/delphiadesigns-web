@@ -1,0 +1,25 @@
+name: Professional website CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify-website:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: ESLint
+        run: npm run lint
+      - name: Next.js production build
+        run: npm run build
+      - name: Smoke-test pages and contact endpoint without sending email
+        run: npm run test:smoke
