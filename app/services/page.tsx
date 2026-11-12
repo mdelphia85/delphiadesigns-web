@@ -57,9 +57,10 @@ We build automation that actually works — not fragile, over-engineered corpora
     },
     {
       key: "ai",
-      title: "AI Integration (Coming Soon)",
-      text: `Intelligent tools that enhance productivity and decision-making.
-Built with real-world use in mind — not hype.`,
+      title: "AI Integration & Assistance",
+      text: `Practical AI integrations for question-answering, connected workflows,
+content assistance, and internal business tools. We evaluate the data,
+privacy, accuracy, and operational fit before recommending an implementation.`,
       color: "bg-teal-900/40 text-teal-300 border-teal-500/40",
     },
   ];
