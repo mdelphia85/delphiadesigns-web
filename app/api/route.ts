@@ -2,45 +2,59 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 export async function POST(request: Request) {
+  let name: unknown;
+  let email: unknown;
+  let message: unknown;
+  let website: unknown;
+
   try {
-    const { name, email, message, website } = await request.json();
-
-    // Honeypot: automated submissions filling this invisible field are ignored.
-    if (typeof website === "string" && website.trim()) {
-      return NextResponse.json({ success: true });
+    const payload = await request.json();
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+      throw new Error("Invalid payload");
     }
+    ({ name, email, message, website } = payload);
+  } catch {
+    return NextResponse.json({ error: "Invalid message format." }, { status: 400 });
+  }
 
-    if (
-      (website !== undefined && typeof website !== "string") ||
-      typeof name !== "string" ||
-      typeof email !== "string" ||
-      typeof message !== "string" ||
-      !name.trim() ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-      !message.trim() ||
-      name.length > 150 ||
-      email.length > 254 ||
-      message.length > 10000
-    ) {
-      return NextResponse.json(
-        { error: "Please enter valid contact information." },
-        { status: 400 }
-      );
-    }
+  // Honeypot: do not contact the mail provider for automated submissions.
+  if (typeof website === "string" && website.trim()) {
+    return NextResponse.json({ success: true });
+  }
 
-    if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json(
-        { error: "Email service is not configured." },
-        { status: 503 }
-      );
-    }
+  if (
+    (website !== undefined && typeof website !== "string") ||
+    typeof name !== "string" ||
+    typeof email !== "string" ||
+    typeof message !== "string" ||
+    !name.trim() ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ||
+    !message.trim() ||
+    name.length > 150 ||
+    email.length > 254 ||
+    message.length > 10000
+  ) {
+    return NextResponse.json(
+      { error: "Please enter valid contact information." },
+      { status: 400 }
+    );
+  }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const nameValue = name.trim();
-    const emailValue = email.trim();
-    const messageValue = message.trim();
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json(
+      { error: "Email service is not configured." },
+      { status: 503 }
+    );
+  }
 
-    const { error } = await resend.emails.send({
+  const nameValue = name.trim();
+  const emailValue = email.trim();
+  const messageValue = message.trim();
+
+  try {
+    const resend = new Resend(apiKey);
+    const { data, error } = await resend.emails.send({
       from: process.env.CONTACT_FROM_EMAIL || "Delphia Designs <contact@delphiadesignsco.com>",
       to: [process.env.CONTACT_EMAIL || "delphiadesigns@gmail.com"],
       replyTo: emailValue,
@@ -48,19 +62,19 @@ export async function POST(request: Request) {
       text: `Name: ${nameValue}\nEmail: ${emailValue}\n\nMessage:\n${messageValue}`,
     });
 
-    if (error) {
-      console.error("Contact email failed:", error);
+    if (error || !data?.id) {
+      console.error("Contact email service rejected the message", error || "missing delivery identifier");
       return NextResponse.json(
         { error: "Unable to deliver your message." },
         { status: 502 }
       );
     }
-
     return NextResponse.json({ success: true });
   } catch {
+    console.error("Contact email service request failed");
     return NextResponse.json(
-      { error: "Unable to process your request." },
-      { status: 400 }
+      { error: "Email service is currently unavailable." },
+      { status: 502 }
     );
   }
 }
