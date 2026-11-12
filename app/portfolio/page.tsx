@@ -34,13 +34,11 @@ export default function PortfolioPage() {
           </p>
 
           <p className="text-gray-300 leading-relaxed">
-            The top 47 fitness apps each focus on specific metrics — meaning
-            users often need multiple subscriptions to track everything they
-            care about. With DelphiaFit, you get a single, all‑in‑one fitness
-            website and app that covers every major metric in one place, with
-            regular updates and improvements. DelphiaFit is built to be your
-            complete fitness solution without the cost and complexity of
-            juggling multiple apps.
+            DelphiaFit brings workout tracking, nutrition tools, progress
+            monitoring, and coaching features together on a single web platform.
+            The website is available now, with an Android app being prepared
+            for release. The product is designed to reduce the need to move
+            between separate fitness-tracking tools.
           </p>
         </div>
 
