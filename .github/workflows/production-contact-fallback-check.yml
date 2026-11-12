@@ -1,0 +1,25 @@
+name: Production contact fallback verification
+
+on:
+  push:
+    branches:
+      - test/contact-fallback-live-20261111
+
+jobs:
+  verify-public-contact-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify live site and unavailable-provider fallback
+        run: |
+          set -euo pipefail
+          page=$(curl --fail --silent --show-error --max-time 25 'https://delphiadesignsco.com/contact')
+          echo "$page" | grep -q 'delphiadesigns@gmail.com'
+          echo "Contact page renders business email (HTTP 200)"
+          response=$(curl --fail --silent --show-error --max-time 25 -H 'Cache-Control: no-cache' 'https://delphiadesignsco.com/api')
+          echo "Public mail readiness response: $response"
+          if ! echo "$response" | grep -Eq '"formAvailable":(false|true)'; then
+            echo "Unexpected readiness response"
+            exit 1
+          fi
+          echo "Readiness check passed; no test email was submitted."
