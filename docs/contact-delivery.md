@@ -1,28 +1,39 @@
-# Delphia Designs: Contact delivery
+# Delphia Designs: website inquiry delivery
 
-## Message flow
+## Architecture
 
-1. The visitor opens `/contact`, enters a name, email and message, and selects **Send Message**.
-2. The form sends JSON to the same-origin `POST /api` route.
-3. The API validates the request and calls the Resend email service.
-4. The intended recipient is `CONTACT_EMAIL` when set, otherwise `delphiadesigns@gmail.com`.
-5. The sender is `CONTACT_FROM_EMAIL` when set, otherwise `Delphia Designs <contact@delphiadesignsco.com>`.
-6. The customer's submitted email is set as Reply-To.
-7. The browser only shows acceptance after Resend accepts the email request. Resend acceptance does **not** guarantee delivery to the recipient inbox; use provider delivery logs to verify the message arrived.
+- **Squarespace DNS:** controls records for `delphiadesignsco.com`. Keep the website's existing A/CNAME records unchanged.
+- **Vercel / Next.js:** hosts the React website and `GET /api` / `POST /api` contact routes.
+- **Resend:** sends a contact inquiry from the verified business domain.
+- **Gmail:** receives the inquiry at `delphiadesigns@gmail.com` by default.
 
-## Production configuration (Vercel)
+The contact page checks `GET /api`. Until an API key is present, the form is hidden and visitors see an **Email Delphia Designs** link opening their email app. The email address and clickable phone number are always displayed. When Resend is configured, the form becomes available. If sending fails, the draft stays in place and a direct email link is provided. Never show successful delivery unless the sending API actually accepted the inquiry.
 
-- `RESEND_API_KEY`: an active API key securely configured on the deployed Vercel project.
-- `CONTACT_EMAIL`: set if inquiries should be sent anywhere other than `delphiadesigns@gmail.com`.
-- `CONTACT_FROM_EMAIL`: optional, must use a sender domain verified with Resend.
-- Verify the sending domain in Resend and add its SPF/DKIM records at the authoritative DNS provider.
-- After setting environment variables, redeploy to make sure production functions can use the values.
+## One-time owner setup
 
-Without a configured API key, the endpoint returns HTTP 503 and the browser keeps the visitor's form inputs with a direct email fallback. Never commit secrets.
+1. Create a free account at <https://resend.com/signup>.
+2. In Resend, add **delphiadesignsco.com** as a sending domain. Resend will show the exact DNS records, usually DKIM/SPF and return-path configuration. Do not invent record values.
+3. In Squarespace open **Domains → delphiadesignsco.com → DNS → DNS Settings → Custom Records**. Add the records exactly as Resend supplies. **Do not change nameservers or remove existing website records.**
+4. Back in Resend, verify the domain; do not proceed until it shows **Verified**.
+5. Create a **sending-only** API key scoped to the verified domain when available, for this website. Copy it once.
+6. In the Vercel project that actually serves `delphiadesignsco.com`, add server-side **Production** environment variables:
+   - `RESEND_API_KEY`: secret key created in Resend.
+   - `CONTACT_EMAIL`: `delphiadesigns@gmail.com` (optional; this is also the default).
+   - `CONTACT_FROM_EMAIL`: `Delphia Designs <contact@delphiadesignsco.com>` (optional; this is also the default).
+7. Redeploy the site on Vercel so its server functions receive those variables. **Never use `NEXT_PUBLIC_` for the API key and never commit or send the key through chat.**
 
-## Safe verification
+## Verification
 
-- Open the live Contact page and submit a real test inquiry using your own address and a clear subject in the body.
-- Confirm the form reports acceptance, the email appears in the recipient mailbox, and replying reaches the test address.
-- If the form reports an error, verify project-level Vercel variables and Resend's sender-domain verification and logs.
-- Do not place a production test message until the sender/recipient are confirmed.
+- Read `https://delphiadesignsco.com/api`: `{"formAvailable":false}` means the form intentionally offers direct email; `{"formAvailable":true}` means an API key is configured, **not** proof the sending domain is verified.
+- Submit exactly one clearly identified test inquiry via `https://delphiadesignsco.com/contact`.
+- Confirm the API accepts it, Resend shows delivery, and the matching message arrives in the `delphiadesigns@gmail.com` inbox. Also check spam or promotions and test Reply-To.
+- Gmail delivery must be verified independently of HTTP 200 / Resend acceptance.
+
+Resend's free plan is suitable for low-volume contact inquiries, subject to its published monthly/daily limits.
+
+## Troubleshooting
+
+- `503 Email service is not configured`: production `RESEND_API_KEY` missing or not redeployed.
+- `502 Unable to deliver`: sending domain verification, key permissions, sending limit, or Resend/provider error; inspect server and provider logs.
+- No mailbox receipt but API success: inspect Resend delivery events, recipient override (`CONTACT_EMAIL`), and Gmail spam.
+- Do not change Squarespace DNS delegation or migrate hosting to enable email delivery.
