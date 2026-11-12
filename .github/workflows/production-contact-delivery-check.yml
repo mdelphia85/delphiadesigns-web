@@ -1,0 +1,35 @@
+name: Authorized production contact delivery test
+
+on:
+  push:
+    branches:
+      - test/contact-email-e2e-20261111
+
+jobs:
+  submit-one-test-contact-inquiry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Submit one clearly labeled website test message
+        shell: bash
+        run: |
+          set -euo pipefail
+          response_file="$(mktemp)"
+          request='{"name":"Delphia Website QA 20261111","email":"delphiadesigns@gmail.com","message":"Authorized Delphia Designs contact form end-to-end delivery test. Marker: DELPHIA-CONTACT-E2E-20261111-1903. No reply or action required.","website":""}'
+          code=$(curl --fail-with-body --show-error --silent --max-time 40 \
+            -X POST 'https://delphiadesignsco.com/api' \
+            -H 'Content-Type: application/json' \
+            --data "$request" \
+            -o "$response_file" -w '%{http_code}') || {
+              echo "Live request failed; response, if any:";
+              cat "$response_file" || true;
+              exit 1;
+            }
+          echo "Contact form production API HTTP status: $code"
+          cat "$response_file"
+          echo
+          if [ "$code" != "200" ] || ! grep -q '"success":true' "$response_file"; then
+            echo "The API did not confirm that Resend accepted the inquiry."
+            exit 1
+          fi
+          echo "API accepted test inquiry; mailbox receipt must be independently checked."
