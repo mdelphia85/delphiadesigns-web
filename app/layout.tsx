@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: "Delphia Designs",
-  description: "Engineering • Development • Precision",
+  description: "Custom software, backend systems, automation engineering, and website development for businesses with real-world challenges.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
