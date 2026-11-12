@@ -3,9 +3,15 @@ import { Resend } from "resend";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, message } = await request.json();
+    const { name, email, message, website } = await request.json();
+
+    // Honeypot: automated submissions filling this invisible field are ignored.
+    if (typeof website === "string" && website.trim()) {
+      return NextResponse.json({ success: true });
+    }
 
     if (
+      (website !== undefined && typeof website !== "string") ||
       typeof name !== "string" ||
       typeof email !== "string" ||
       typeof message !== "string" ||
@@ -30,13 +36,16 @@ export async function POST(request: Request) {
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
+    const nameValue = name.trim();
+    const emailValue = email.trim();
+    const messageValue = message.trim();
 
     const { error } = await resend.emails.send({
-      from: "Delphia Designs <contact@delphiadesignsco.com>",
+      from: process.env.CONTACT_FROM_EMAIL || "Delphia Designs <contact@delphiadesignsco.com>",
       to: [process.env.CONTACT_EMAIL || "delphiadesigns@gmail.com"],
-      replyTo: email,
-      subject: `Website inquiry from ${name.replace(/[\r\n]/g, " ")}`,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      replyTo: emailValue,
+      subject: `Website inquiry from ${nameValue.replace(/[\r\n]/g, " ")}`,
+      text: `Name: ${nameValue}\nEmail: ${emailValue}\n\nMessage:\n${messageValue}`,
     });
 
     if (error) {
